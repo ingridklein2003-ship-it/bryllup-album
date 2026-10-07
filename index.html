@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petur &amp; Birgit – del jeres billeder</title>
+<meta name="description" content="Del dine billeder og videoer fra Petur og Birgits bryllup.">
+<meta name="theme-color" content="#F2F3F1">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3F1;      /* kølig hør */
+    --surface:#FFFFFF;
+    --ink:#23272A;
+    --muted:#6C7175;
+    --line:#D8DBD8;
+    --patina:#2F4B45;     /* kobbertagenes mørke patina */
+    --patina-soft:#DCE6E2;
+    --error:#9A3B32;
+    --radius:14px;
+    --serif:"Instrument Serif", Georgia, serif;
+    --sans:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);
+       -webkit-font-smoothing:antialiased}
+  main{max-width:560px;margin:0 auto;padding:max(56px,env(safe-area-inset-top)) 22px 64px}
+  button,input{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--patina);outline-offset:3px}
+
+  /* Navne */
+  .names{text-align:center;margin:0 0 28px;font-family:var(--serif);font-weight:400;
+         font-size:clamp(60px,18vw,96px);line-height:.92;letter-spacing:-.01em}
+  .names span{display:block}
+  .names .amp{font-style:italic;color:var(--patina);font-size:.62em;line-height:1.15}
+  .date{text-align:center;color:var(--muted);font-size:15px;margin:-10px 0 34px}
+  .intro{text-align:center;margin:0 auto 34px;max-width:30em;text-wrap:pretty}
+
+  /* Upload */
+  .upload-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    min-height:60px;border:0;border-radius:999px;background:var(--patina);color:#fff;
+    font-weight:600;font-size:18px;cursor:pointer;transition:transform .15s,background .15s}
+  .upload-btn:hover{background:#263f3a}
+  .upload-btn:active{transform:scale(.985)}
+  .upload-btn svg{width:22px;height:22px}
+  .hint{text-align:center;color:var(--muted);font-size:14px;margin:12px 0 0}
+  #file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+  .queue{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px}
+  .queue li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;
+    background:var(--surface);border-radius:12px;padding:8px 12px 8px 8px;font-size:14px}
+  .queue .thumb{width:44px;height:44px;border-radius:8px;background:var(--patina-soft);object-fit:cover}
+  .queue .bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
+  .queue .bar i{display:block;height:100%;width:0;background:var(--patina);transition:width .2s}
+  .queue .state{color:var(--muted);white-space:nowrap}
+  .queue .done .state{color:var(--patina);font-weight:600}
+  .queue .failed .state{color:var(--error)}
+  .queue .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .thanks{text-align:center;margin:20px 0 0;font-family:var(--serif);font-size:26px;color:var(--patina)}
+
+  /* Album */
+  .album{margin-top:64px;border-top:1px solid var(--line);padding-top:40px}
+  .album h2{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.1;margin:0 0 6px;text-align:center}
+  .album .count{text-align:center;color:var(--muted);margin:0 0 26px}
+  .locked{background:var(--surface);border-radius:var(--radius);padding:28px 22px;text-align:center}
+  .lock-ic{width:44px;height:44px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;
+    background:var(--patina-soft);color:var(--patina)}
+  .lock-ic svg{width:20px;height:20px}
+  .locked p{margin:0 0 18px;color:var(--muted);font-size:15px}
+  .code-row{display:flex;gap:8px;max-width:340px;margin:0 auto}
+  .code-row input{flex:1;min-width:0;height:50px;border:1px solid var(--line);border-radius:999px;
+    padding:0 18px;background:var(--paper);font-size:16px}
+  .code-row button{height:50px;padding:0 20px;border-radius:999px;border:1px solid var(--patina);
+    background:transparent;color:var(--patina);font-weight:600;cursor:pointer}
+  .code-row button:hover{background:var(--patina);color:#fff}
+  .err{color:var(--error);font-size:14px;min-height:1.4em;margin:10px 0 0}
+
+  .tools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin:0 0 16px}
+  .ghost{border:1px solid var(--line);background:var(--surface);border-radius:999px;height:44px;padding:0 18px;
+    font-weight:500;cursor:pointer}
+  .ghost:hover{border-color:var(--patina);color:var(--patina)}
+  .switch{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);cursor:pointer}
+  .switch input{appearance:none;width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;
+    cursor:pointer;transition:background .2s;margin:0}
+  .switch input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+    background:#fff;transition:transform .2s}
+  .switch input:checked{background:var(--patina)}
+  .switch input:checked::after{transform:translateX(18px)}
+  .zip-status{font-size:14px;color:var(--muted);margin:-6px 0 14px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;border-radius:var(--radius);overflow:hidden}
+  .grid button{all:unset;position:relative;aspect-ratio:1;cursor:pointer;background:var(--patina-soft);overflow:hidden}
+  .grid button:focus-visible{outline:2px solid var(--patina);outline-offset:-2px}
+  .grid img,.grid video{width:100%;height:100%;object-fit:cover;display:block}
+  .grid .play{position:absolute;right:6px;bottom:6px;width:24px;height:24px;border-radius:50%;
+    background:rgba(255,255,255,.9);display:grid;place-items:center;color:var(--ink)}
+  .grid .play svg{width:10px;height:10px;margin-left:2px}
+  .empty{text-align:center;color:var(--muted);background:var(--surface);border-radius:var(--radius);padding:28px}
+
+  /* Lightbox */
+  .lightbox{position:fixed;inset:0;background:rgba(20,23,24,.94);display:none;align-items:center;justify-content:center;z-index:10;
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .lightbox.open{display:flex}
+  .lightbox img,.lightbox video{max-width:100vw;max-height:86vh;object-fit:contain}
+  .lb-btn{position:absolute;border:0;background:rgba(255,255,255,.12);color:#fff;width:46px;height:46px;border-radius:50%;
+    cursor:pointer;display:grid;place-items:center}
+  .lb-btn svg{width:20px;height:20px}
+  .lb-close{top:max(16px,env(safe-area-inset-top));right:16px}
+  .lb-prev{left:12px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:12px;top:50%;transform:translateY(-50%)}
+
+  footer{text-align:center;margin-top:72px;font-family:var(--serif);font-size:24px;color:var(--muted)}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1 class="names"><span>Petur</span><span class="amp">&amp;</span><span>Birgit</span></h1>
+  <p class="date" id="date"></p>
+
+  <p class="intro">Har du taget billeder eller små videoer i aften, må du meget gerne dele dem her. Så kan Petur og Birgit altid se tilbage på en smuk dag med familie og venner.</p>
+
+  <label class="upload-btn" for="file" role="button" tabindex="0" id="uploadLabel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6.5 9.5 12 4l5.5 5.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+    Del billeder og videoer
+  </label>
+  <input type="file" id="file" accept="image/*,video/*" multiple>
+  <p class="hint">Du kan vælge flere på én gang. Der står ikke navn på det, du deler.</p>
+
+  <ul class="queue" id="queue" aria-live="polite"></ul>
+  <p class="thanks" id="thanks" hidden>Tak fordi du delte</p>
+
+  <section class="album" aria-labelledby="albumTitle">
+    <h2 id="albumTitle">Albummet</h2>
+    <p class="count" id="count">&nbsp;</p>
+
+    <div class="locked" id="locked">
+      <div class="lock-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+      <p>Albummet er låst indtil videre. Har du fået en kode, kan du åbne det her.</p>
+      <form class="code-row" id="codeForm">
+        <input id="code" type="password" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Kode" aria-label="Kode til albummet">
+        <button type="submit">Åbn</button>
+      </form>
+      <p class="err" id="codeErr" role="alert"></p>
+    </div>
+
+    <div id="open" hidden>
+      <div class="tools" id="adminTools" hidden>
+        <button class="ghost" id="zipBtn" type="button">Download alle som zip</button>
+        <label class="switch"><input type="checkbox" id="publicToggle"> Synligt for alle gæster</label>
+      </div>
+      <p class="zip-status" id="zipStatus" hidden></p>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>Der er ikke delt noget endnu.</p>
+    </div>
+  </section>
+
+  <footer>Stort tillykke, Petur og Birgit</footer>
+</main>
+
+<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Billede">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Luk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Forrige"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div id="lbMedia"></div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Næste"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+/* ---------- Indstillinger ---------- */
+const CONFIG = {
+  projectRef: "vmneopkocogduzwisiah",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtbmVvcGtvY29nZHV6d2lzaWFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzODU2MzMsImV4cCI6MjEwNjk2MTYzM30.ZkjvRe0qGHMNghG9e6GVSEys81G4ezDw30aV5hxIV0w",
+  bucket: "album",
+  dateText: "Oktober 2026",           // fx "17. oktober 2026"
+  maxVideoMB: 50,                    // hæv til fx 500, hvis Supabase opgraderes til Pro
+  maxImageSide: 3200,                // billeder skaleres ned til denne længste side
+  zipName: "Petur-og-Birgit-bryllup.zip",
+};
+/* ----------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+const API = `https://${CONFIG.projectRef}.supabase.co/functions/v1/album`;
+const TUS = `https://${CONFIG.projectRef}.storage.supabase.co/storage/v1/upload/resumable`;
+$("date").textContent = CONFIG.dateText;
+
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch {} },
+};
+
+async function api(body){
+  const res = await fetch(API, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json", apikey: CONFIG.anonKey },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(data.error || "server"), { code: data.error, status: res.status });
+  return data;
+}
+
+/* ---------- Upload ---------- */
+const queue = $("queue");
+let active = 0;
+$("uploadLabel").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("file").click(); }
+});
+$("file").addEventListener("change", (e) => {
+  const files = [...e.target.files];
+  e.target.value = "";
+  $("thanks").hidden = true;
+  files.forEach(enqueue);
+  runQueue();
+});
+window.addEventListener("beforeunload", (e) => { if (active > 0) { e.preventDefault(); e.returnValue = ""; } });
+
+const pending = [];
+function enqueue(file){
+  const li = document.createElement("li");
+  const isVideo = file.type.startsWith("video/");
+  const thumb = document.createElement(isVideo ? "div" : "img");
+  thumb.className = "thumb";
+  if (!isVideo) { thumb.src = URL.createObjectURL(file); thumb.alt = ""; }
+  li.append(thumb);
+  li.insertAdjacentHTML("beforeend",
+    `<div><div class="label"></div><div class="bar"><i></i></div></div><span class="state">Venter</span>`);
+  li.querySelector(".label").textContent = isVideo ? "Video" : "Billede";
+  queue.prepend(li);
+  pending.push({ file, li });
+}
+
+let running = false;
+async function runQueue(){
+  if (running) return;
+  running = true;
+  // to ad gangen giver god fart uden at kvæle hotellets wifi
+  const worker = async () => { while (pending.length) await uploadOne(pending.shift()); };
+  await Promise.all([worker(), worker()]);
+  running = false;
+  if (!queue.querySelector(".failed")) $("thanks").hidden = false;
+  refreshCount();
+}
+
+function setState(li, text, cls){ li.querySelector(".state").textContent = text; if (cls) li.className = cls; }
+function setProgress(li, p){ li.querySelector(".bar i").style.width = `${Math.round(p*100)}%`; }
+
+async function uploadOne({ file, li }){
+  active++;
+  try {
+    const isVideo = file.type.startsWith("video/");
+    if (isVideo && file.size > CONFIG.maxVideoMB * 1024 * 1024) {
+      setState(li, `For stor (maks ${CONFIG.maxVideoMB} MB)`, "failed");
+      return;
+    }
+    setState(li, "Forbereder");
+    const blob = isVideo ? file : await shrinkImage(file);
+    if (!isVideo && blob.size > CONFIG.maxVideoMB * 1024 * 1024) {
+      setState(li, "Filen er for stor", "failed"); return;
+    }
+    const ext = extFor(blob.type || file.type, file.name);
+    const name = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    setState(li, "0 %");
+    await tusUpload(blob, name, blob.type || file.type || "application/octet-stream", (p) => {
+      setProgress(li, p); setState(li, `${Math.round(p*100)} %`);
+    });
+    setProgress(li, 1);
+    setState(li, "Delt", "done");
+  } catch (err) {
+    console.error(err);
+    setState(li, "Fejlede", "failed");
+    const retry = document.createElement("button");
+    retry.className = "ghost"; retry.style.height = "32px"; retry.style.padding = "0 12px"; retry.textContent = "Prøv igen";
+    retry.onclick = () => { li.className = ""; retry.remove(); pending.push({ file, li }); runQueue(); };
+    li.querySelector(".state").after(retry);
+    li.style.gridTemplateColumns = "44px 1fr auto auto";
+  } finally { active--; }
+}
+
+function tusUpload(blob, objectName, contentType, onProgress){
+  return new Promise((resolve, reject) => {
+    const up = new tus.Upload(blob, {
+      endpoint: TUS,
+      retryDelays: [0, 1500, 3000, 6000, 12000, 20000],
+      headers: { authorization: `Bearer ${CONFIG.anonKey}`, apikey: CONFIG.anonKey, "x-upsert": "false" },
+      uploadDataDuringCreation: true,
+      removeFingerprintOnSuccess: true,
+      chunkSize: 6 * 1024 * 1024, // krævet af Supabase
+      metadata: { bucketName: CONFIG.bucket, objectName, contentType, cacheControl: "3600" },
+      onError: reject,
+      onProgress: (sent, total) => onProgress(total ? sent / total : 0),
+      onSuccess: resolve,
+    });
+    up.findPreviousUploads().then((prev) => { if (prev.length) up.resumeFromPreviousUpload(prev[0]); up.start(); });
+  });
+}
+
+async function shrinkImage(file){
+  if (/gif|svg/.test(file.type)) return file;
+  try {
+    const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+    const scale = Math.min(1, CONFIG.maxImageSide / Math.max(bmp.width, bmp.height));
+    if (scale === 1 && file.size < 4 * 1024 * 1024 && file.type === "image/jpeg") return file;
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    const out = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.9));
+    return out && out.size < file.size ? out : file;
+  } catch { return file; } // fx HEIC på computer: send originalen
+}
+
+function extFor(type, name){
+  const map = { "image/jpeg":"jpg","image/png":"png","image/heic":"heic","image/heif":"heif","image/webp":"webp",
+    "image/gif":"gif","video/mp4":"mp4","video/quicktime":"mov","video/webm":"webm" };
+  return map[type] || (name.split(".").pop() || "bin").toLowerCase().slice(0,5);
+}
+
+/* ---------- Album ---------- */
+let files = [];
+let code = store.get("album-code") || "";
+
+async function refreshCount(){
+  try {
+    const s = await api({ action:"status" });
+    $("count").textContent = s.count === 0 ? "Endnu ikke noget delt"
+      : s.count === 1 ? "1 billede eller video er delt" : `${s.count} billeder og videoer er delt`;
+    return s;
+  } catch { $("count").textContent = " "; return null; }
+}
+
+async function openAlbum(withCode){
+  const data = await api({ action:"open", code: withCode || undefined });
+  files = data.files; // nyeste først (sorteret af serveren)
+  $("locked").hidden = true;
+  $("open").hidden = false;
+  $("adminTools").hidden = !data.isAdmin;
+  $("publicToggle").checked = data.isPublic;
+  renderGrid();
+}
+
+function renderGrid(){
+  const grid = $("grid");
+  grid.innerHTML = "";
+  $("empty").hidden = files.length > 0;
+  files.forEach((f, i) => {
+    const b = document.createElement("button");
+    b.setAttribute("aria-label", f.type.startsWith("video/") ? "Åbn video" : "Åbn billede");
+    if (f.type.startsWith("video/")) {
+      const v = document.createElement("video");
+      v.src = f.url + "#t=0.1"; v.muted = true; v.playsInline = true; v.preload = "metadata";
+      b.append(v);
+      b.insertAdjacentHTML("beforeend", `<span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg></span>`);
+    } else {
+      const img = document.createElement("img");
+      img.src = f.url; img.loading = "lazy"; img.decoding = "async"; img.alt = "";
+      b.append(img);
+    }
+    b.onclick = () => showLb(i);
+    grid.append(b);
+  });
+}
+
+$("codeForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const val = $("code").value.trim();
+  if (!val) { $("codeErr").textContent = "Skriv koden for at åbne albummet."; return; }
+  $("codeErr").textContent = "";
+  try {
+    await openAlbum(val);
+    code = val; store.set("album-code", val);
+  } catch (err) {
+    $("codeErr").textContent = err.code === "wrong_code"
+      ? "Koden passer ikke. Tjek stavningen og prøv igen."
+      : "Albummet kunne ikke åbnes lige nu. Prøv igen om lidt.";
+  }
+});
+
+$("publicToggle").addEventListener("change", async (e) => {
+  const want = e.target.checked;
+  try { await api({ action:"setPublic", code, value: want }); }
+  catch { e.target.checked = !want; alertInline("Indstillingen blev ikke gemt. Prøv igen."); }
+});
+
+function alertInline(msg){ const z = $("zipStatus"); z.hidden = false; z.textContent = msg; }
+
+$("zipBtn").addEventListener("click", async () => {
+  const btn = $("zipBtn");
+  if (!files.length) return alertInline("Der er ikke noget at downloade endnu.");
+  btn.disabled = true;
+  try {
+    const fresh = await api({ action:"open", code });   // friske links
+    const list = fresh.files.slice().reverse();          // ældste først i zip-filen
+    const zip = new JSZip();
+    let n = 0;
+    for (const f of list) {
+      n++;
+      alertInline(`Henter ${n} af ${list.length} …`);
+      const res = await fetch(f.url);
+      if (!res.ok) continue;
+      const ext = f.name.split(".").pop();
+      zip.file(`${String(n).padStart(3,"0")}.${ext}`, await res.blob(), { binary:true });
+    }
+    alertInline("Pakker zip-filen …");
+    const blob = await zip.generateAsync({ type:"blob", compression:"STORE" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = CONFIG.zipName;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+    alertInline(`Zip-filen med ${list.length} filer er downloadet.`);
+  } catch (err) {
+    console.error(err);
+    alertInline("Zip-filen kunne ikke laves. Prøv igen på en computer med god forbindelse.");
+  } finally { btn.disabled = false; }
+});
+
+/* ---------- Lightbox ---------- */
+let lbIndex = 0;
+function showLb(i){
+  lbIndex = (i + files.length) % files.length;
+  const f = files[lbIndex];
+  const box = $("lbMedia");
+  box.innerHTML = "";
+  if (f.type.startsWith("video/")) {
+    const v = document.createElement("video");
+    v.src = f.url; v.controls = true; v.playsInline = true; v.autoplay = true;
+    box.append(v);
+  } else {
+    const img = document.createElement("img"); img.src = f.url; img.alt = ""; box.append(img);
+  }
+  $("lb").classList.add("open");
+  document.body.style.overflow = "hidden";
+  $("lbClose").focus();
+}
+function closeLb(){ $("lb").classList.remove("open"); $("lbMedia").innerHTML = ""; document.body.style.overflow = ""; }
+$("lbClose").onclick = closeLb;
+$("lbPrev").onclick = () => showLb(lbIndex - 1);
+$("lbNext").onclick = () => showLb(lbIndex + 1);
+$("lb").addEventListener("click", (e) => { if (e.target.id === "lb") closeLb(); });
+document.addEventListener("keydown", (e) => {
+  if (!$("lb").classList.contains("open")) return;
+  if (e.key === "Escape") closeLb();
+  if (e.key === "ArrowLeft") showLb(lbIndex - 1);
+  if (e.key === "ArrowRight") showLb(lbIndex + 1);
+});
+let tx = null;
+$("lb").addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive:true });
+$("lb").addEventListener("touchend", (e) => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 50) showLb(lbIndex + (dx < 0 ? 1 : -1));
+});
+
+/* ---------- Start ---------- */
+(async () => {
+  const s = await refreshCount();
+  if (code) { try { await openAlbum(code); return; } catch { store.set("album-code", ""); code = ""; } }
+  if (s && s.isPublic) { try { await openAlbum(); } catch {} }
+})();
+</script>
+</body>
+</html>
