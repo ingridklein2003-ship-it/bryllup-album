@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pætur &amp; Birgit – del jeres billeder</title>
-<meta name="description" content="Del dine billeder og videoer fra Pætur og Birgits bryllup.">
+<title>Birgit &amp; Pætur – del jeres billeder</title>
+<meta name="description" content="Del dine billeder og videoer fra Birgit og Pæturs bryllup.">
 <meta name="theme-color" content="#EFE8DD">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -180,10 +180,10 @@
 </head>
 <body>
 <main>
-  <h1 class="names"><span>Pætur</span><span class="amp">&amp;</span><span>Birgit</span></h1>
+  <h1 class="names"><span>Birgit</span><span class="amp">&amp;</span><span>Pætur</span></h1>
   <p class="date" id="date"></p>
 
-  <p class="intro">Har du taget billeder eller små videoer i aften, må du meget gerne dele dem her. Så kan Pætur og Birgit altid se tilbage på en smuk dag med familie og venner.</p>
+  <p class="intro">Har du taget billeder eller små videoer i aften, må du meget gerne dele dem her. Så kan Birgit og Pætur altid se tilbage på en smuk dag med familie og venner.</p>
 
   <figure class="note" id="note">
     <blockquote id="noteText"></blockquote>
@@ -217,9 +217,9 @@
 
   <section class="greet" aria-labelledby="greetTitle">
     <h2 id="greetTitle">Skriv en hilsen</h2>
-    <p class="greet-sub">Et par ord til Pætur og Birgit. Du behøver ikke at tage et billede.</p>
+    <p class="greet-sub">Et par ord til Birgit og Pætur. Du behøver ikke at tage et billede.</p>
     <form id="greetForm">
-      <textarea id="greetMsg" maxlength="800" placeholder="Kære Pætur og Birgit …" aria-label="Din hilsen"></textarea>
+      <textarea id="greetMsg" maxlength="800" placeholder="Kære Birgit og Pætur …" aria-label="Din hilsen"></textarea>
       <input id="greetName" maxlength="60" autocomplete="name" placeholder="Fra (valgfrit)" aria-label="Fra, valgfrit">
       <div class="greet-row"><span id="greetCount">0 / 800</span></div>
       <button class="upload-btn" type="submit" id="greetBtn">Send hilsen</button>
@@ -261,7 +261,7 @@
     </div>
   </section>
 
-  <footer>Stort tillykke, Pætur og Birgit</footer>
+  <footer>Stort tillykke, Birgit og Pætur</footer>
 </main>
 
 <div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Billede">
@@ -280,18 +280,19 @@ const CONFIG = {
   projectRef: "vmneopkocogduzwisiah",
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtbmVvcGtvY29nZHV6d2lzaWFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzODU2MzMsImV4cCI6MjEwNjk2MTYzM30.ZkjvRe0qGHMNghG9e6GVSEys81G4ezDw30aV5hxIV0w",
   bucket: "album",
-  dateText: "Oktober 2026",           // fx "17. oktober 2026"
-  maxVideoMB: 50,                    // hæv til fx 500, hvis Supabase opgraderes til Pro
+  dateText: "17. oktober 2026",
+  maxVideoMB: 500,                   // Supabase Pro: bucket-grænsen er også 500 MB
   maxImageSide: 3200,                // billeder skaleres ned til denne længste side
-  zipName: "Paetur-og-Birgit-bryllup.zip",
+  zipName: "Birgit-og-Paetur-bryllup.zip",
   // Din egen hilsen øverst på siden og forrest i hilsen-PDF'en (pladsholder – skriv den færdig her)
   note: {
-    text: "Kære Pætur og Birgit\n\nHer kommer min hilsen til jer. Det her er bare fyldtekst, så I kan se, hvor meget plads der er, og hvordan det ser ud, når der står et par linjer mere. Den rigtige tekst skrives færdig inden den store dag.",
+    // Tom tekst = feltet skjules på siden og i PDF'en
+    text: "",
     from: "Kærlig hilsen Ingrid",
   },
   undoMinutes: 10,
   tasks: [
-    "Pætur og Birgit, når de ikke ser det",
+    "Birgit og Pætur, når de ikke ser det",
     "Brudeparret med et glas i hånden",
     "En skål",
     "Hele dit bord på ét billede",
@@ -325,8 +326,10 @@ async function api(body){
 }
 
 /* ---------- Upload ---------- */
-$("noteText").textContent = CONFIG.note.text;
-$("noteFrom").textContent = CONFIG.note.from;
+if (CONFIG.note.text.trim()) {
+  $("noteText").textContent = CONFIG.note.text;
+  $("noteFrom").textContent = CONFIG.note.from;
+} else { $("note").hidden = true; }
 const UNDO_MS = CONFIG.undoMinutes * 60 * 1000;
 const queue = $("queue");
 let active = 0;
@@ -623,7 +626,7 @@ $("zipBtn").addEventListener("click", async () => {
     }
     if (fresh.greetings && fresh.greetings.length) {
       alertInline("Laver hilsen-PDF …");
-      try { zip.file("Hilsner til Paetur og Birgit.pdf", await greetingsPdf(fresh.greetings)); }
+      try { zip.file("Hilsner til Birgit og Paetur.pdf", await greetingsPdf(fresh.greetings)); }
       catch (e) { console.error(e); zip.file("Hilsner.txt", fresh.greetings.map((g) => `${g.message}${g.name ? `\n– ${g.name}` : ""}`).join("\n\n---\n\n")); }
     }
     alertInline("Pakker zip-filen …");
@@ -659,12 +662,12 @@ async function greetingsPdf(list){
   // Forside
   doc.setFillColor(239, 232, 221); doc.rect(0, 0, W, H, "F");
   doc.setTextColor(...ink); doc.setFont(serif, "normal"); doc.setFontSize(34);
-  doc.text("Pætur & Birgit", W / 2, 88, { align:"center" });
+  doc.text("Birgit & Pætur", W / 2, 88, { align:"center" });
   doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(...muted);
   doc.text("Hilsner fra familie og venner", W / 2, 100, { align:"center" });
   doc.text(CONFIG.dateText, W / 2, 107, { align:"center" });
   // Indhold
-  const entries = [{ message: CONFIG.note.text, name: CONFIG.note.from.replace(/^Kærlig hilsen\s*/i, "") }, ...list];
+  const entries = [...(CONFIG.note.text.trim() ? [{ message: CONFIG.note.text, name: CONFIG.note.from.replace(/^Kærlig hilsen\s*/i, "") }] : []), ...list];
   let y = H; // tving ny side
   const newPage = () => { doc.addPage(); y = M + 4; };
   entries.forEach((g, i) => {
@@ -706,7 +709,7 @@ function renderTasks(){
   });
   const c = doneSet.size, total = CONFIG.tasks.length, p = $("huntProgress");
   p.classList.toggle("all", c === total);
-  p.textContent = c === total ? "Alle klaret – tak! Det bliver Pætur og Birgit glade for."
+  p.textContent = c === total ? "Alle klaret – tak! Det bliver Birgit og Pætur glade for."
     : c === 0 ? "" : `${c} af ${total} klaret`;
 }
 function setTaskDone(n, val){
