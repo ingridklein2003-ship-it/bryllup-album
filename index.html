@@ -48,7 +48,7 @@
   .note figcaption{margin-top:14px;color:var(--muted);font-size:15px}
 
   /* Mapper */
-  .tabs{display:flex;justify-content:center;gap:6px;margin:0 auto 18px;background:var(--soft);border-radius:999px;padding:5px;width:max-content;max-width:100%}
+  .tabs{display:flex;justify-content:center;gap:6px;margin:0 auto 18px;background:var(--soft);border-radius:26px;padding:5px;width:max-content;max-width:100%;flex-wrap:wrap}
   .tab{border:0;background:transparent;border-radius:999px;height:42px;padding:0 20px;cursor:pointer;font-weight:500;white-space:nowrap}
   .tab[aria-selected="true"]{background:var(--ink);color:#fff}
   .tab small{opacity:.65;font-weight:400;margin-left:4px}
@@ -198,6 +198,7 @@ const CONFIG = {
     { id: "redigeret",  label: "Redigeret",  sub: "Mine udvalgte og redigerede billeder og videoer." },
     { id: "uredigeret", label: "Uredigeret", sub: "Alt, som det kom ud af kameraet." },
     { id: "raw",        label: "RAW",        sub: "Originale RAW-filer (.ARW) i fuld kvalitet. Kan åbnes i fx Lightroom, Photoshop eller Fotos på Mac." },
+    { id: "video",      label: "Video",      sub: "Videoer fra dagen." },
   ],
   note: {
     text: "Kære Birgit og Pætur\n\nTil jeres bryllup samledes familie og venner for at fejre jer to, og jeg er så glad for, at jeg var en af dem. Her har jeg samlet de billeder og videoer, jeg tog i løbet af dagen, så I kan opleve den igen, også de øjeblikke I ikke selv så. Stort tillykke.",
