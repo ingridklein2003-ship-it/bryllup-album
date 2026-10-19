@@ -52,6 +52,8 @@
   .tab{border:0;background:transparent;border-radius:999px;height:42px;padding:0 20px;cursor:pointer;font-weight:500;white-space:nowrap}
   .tab[aria-selected="true"]{background:var(--ink);color:#fff}
   .tab small{opacity:.65;font-weight:400;margin-left:4px}
+  @media (max-width:480px){.tab{padding:0 13px;font-size:15px}}
+  .lb-note{color:#fff;text-align:center;max-width:22em;padding:0 24px;line-height:1.5}
   .folder-sub{text-align:center;color:var(--muted);font-size:15px;margin:0 auto 22px;max-width:32em}
 
   .dl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 10px}
@@ -160,7 +162,7 @@
         <strong>Vælg filer</strong>
         <span>eller træk dem herind – originalerne bevares</span>
       </label>
-      <input type="file" id="file" multiple accept="image/*,video/*,.heic,.HEIC,.mov,.MOV,.mp4,.MP4">
+      <input type="file" id="file" multiple accept="image/*,video/*,.heic,.HEIC,.mov,.MOV,.mp4,.MP4,.arw,.ARW">
       <ul class="queue" id="queue"></ul>
       <p class="sum" id="sum"></p>
     </section>
@@ -195,6 +197,7 @@ const CONFIG = {
   folders: [
     { id: "redigeret",  label: "Redigeret",  sub: "Mine udvalgte og redigerede billeder og videoer." },
     { id: "uredigeret", label: "Uredigeret", sub: "Alt, som det kom ud af kameraet." },
+    { id: "raw",        label: "RAW",        sub: "Originale RAW-filer (.ARW) i fuld kvalitet. Kan åbnes i fx Lightroom, Photoshop eller Fotos på Mac." },
   ],
   note: {
     text: "Kære Birgit og Pætur\n\nTil jeres bryllup samledes familie og venner for at fejre jer to, og jeg er så glad for, at jeg var en af dem. Her har jeg samlet de billeder og videoer, jeg tog i løbet af dagen, så I kan opleve den igen, også de øjeblikke I ikke selv så. Stort tillykke.",
@@ -217,6 +220,7 @@ const store = {
   del(k){ try { localStorage.removeItem(k); } catch {} },
 };
 const fmtSize = (b) => b >= 1e9 ? (b/1e9).toFixed(1).replace(".",",")+" GB" : b >= 1e6 ? Math.round(b/1e6)+" MB" : Math.max(1,Math.round(b/1e3))+" KB";
+const isRaw = (f) => /\.(arw|cr2|cr3|nef|dng|raf|orf|rw2)$/i.test(f.name);
 const isVideo = (f) => (f.type||"").startsWith("video/") || /\.(mov|mp4|m4v|avi|mts|webm)$/i.test(f.name);
 
 async function api(body){
@@ -313,6 +317,8 @@ function showLb(list, i){
   m.innerHTML = "";
   if (isVideo(f)) {
     const v = document.createElement("video"); v.src = f.url; v.controls = true; v.playsInline = true; v.autoplay = true; m.append(v);
+  } else if (isRaw(f) && !f.web) {
+    const p = document.createElement("p"); p.className = "lb-note"; p.textContent = f.name + " er en RAW-fil. Tryk “Hent original” for at gemme den."; m.append(p);
   } else {
     const img = new Image(); img.alt = ""; img.src = f.web || f.url;
     img.onerror = () => { if (img.src !== f.url) img.src = f.url; };
@@ -449,7 +455,7 @@ function uniqueName(folder, name, size){
 function guessType(file){
   if (file.type) return file.type;
   const ext = (file.name.split(".").pop() || "").toLowerCase();
-  return ({ jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", heic:"image/heic", heif:"image/heif", mov:"video/quicktime", mp4:"video/mp4", m4v:"video/mp4", mts:"video/mp2t" })[ext] || "application/octet-stream";
+  return ({ jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", heic:"image/heic", heif:"image/heif", mov:"video/quicktime", mp4:"video/mp4", m4v:"video/mp4", mts:"video/mp2t", arw:"image/x-sony-arw" })[ext] || "application/octet-stream";
 }
 
 function addFiles(files){
@@ -536,8 +542,40 @@ async function frameOf(file){
       return { src: v, w: v.videoWidth, h: v.videoHeight, video: true };
     } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
   }
-  const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const src = isRaw(file) ? await rawPreview(file) : file;
+  const bmp = await createImageBitmap(src, { imageOrientation: "from-image" });
   return { src: bmp, w: bmp.width, h: bmp.height };
+}
+/* RAW (fx Sony .ARW) er TIFF med indlejrede JPEG-forhåndsvisninger – find den største */
+async function rawPreview(file){
+  const buf = await file.arrayBuffer(), dv = new DataView(buf), n = buf.byteLength;
+  const le = dv.getUint16(0) === 0x4949;
+  const u16 = (o) => dv.getUint16(o, le), u32 = (o) => dv.getUint32(o, le);
+  const found = [], seen = new Set();
+  const walk = (off, depth) => {
+    while (off > 0 && off + 2 < n && !seen.has(off) && depth < 8) {
+      seen.add(off);
+      const cnt = u16(off); if (cnt > 1000 || off + 2 + cnt * 12 > n) return;
+      let jo = 0, jl = 0, so = 0, sl = 0, comp = 0;
+      for (let i = 0; i < cnt; i++) {
+        const e = off + 2 + i * 12, tag = u16(e), type = u16(e + 2), c = u32(e + 4);
+        const val = type === 3 && c === 1 ? u16(e + 8) : u32(e + 8);
+        if (tag === 0x0201) jo = val; else if (tag === 0x0202) jl = val;
+        else if (tag === 0x0111 && c === 1) so = val; else if (tag === 0x0117 && c === 1) sl = val;
+        else if (tag === 0x0103) comp = val;
+        else if (tag === 0x014A || tag === 0x8769) {
+          if (c === 1) walk(val, depth + 1); else for (let k = 0; k < c && k < 8; k++) walk(u32(val + k * 4), depth + 1);
+        }
+      }
+      if (jo && jl) found.push([jo, jl]);
+      if ((comp === 6 || comp === 7) && so && sl) found.push([so, sl]);
+      off = u32(off + 2 + cnt * 12);
+    }
+  };
+  walk(u32(4), 0);
+  const ok = found.filter(([o, l]) => o + l <= n && dv.getUint16(o) === 0xFFD8).sort((a, b) => b[1] - a[1]);
+  if (!ok.length) throw new Error("no-preview");
+  return new Blob([buf.slice(ok[0][0], ok[0][0] + ok[0][1])], { type: "image/jpeg" });
 }
 function toJpeg(fr, maxSide, q){
   const s = Math.min(1, maxSide / Math.max(fr.w, fr.h));
