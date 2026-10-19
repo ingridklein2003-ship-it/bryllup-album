@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Birgit &amp; Pætur – del jeres billeder</title>
-<meta name="description" content="Del dine billeder og videoer fra Birgit og Pæturs bryllup.">
+<title>Birgit &amp; Pætur – bryllupsalbum</title>
+<meta name="description" content="Billeder og video fra Birgit og Pæturs bryllup.">
 <meta name="theme-color" content="#EFE8DD">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,254 +12,157 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#EFE8DD;      /* beige */
-    --surface:#FFFFFF;    /* hvid */
-    --ink:#161514;        /* sort */
-    --muted:#6F6A63;
-    --line:#DDD4C6;
-    --wine:#161514;       /* accent: sort */
-    --wine-soft:#E4DBCD;
-    --olive:#161514;
-    --error:#9A3B32;
-    --radius:14px;
+    --paper:#EFE8DD; --surface:#FFFFFF; --ink:#161514; --muted:#6F6A63; --line:#DDD4C6;
+    --soft:#E4DBCD; --error:#9A3B32; --radius:14px;
     --serif:"Instrument Serif", Georgia, serif;
     --sans:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);
-       -webkit-font-smoothing:antialiased}
-  main{max-width:560px;margin:0 auto;padding:max(56px,env(safe-area-inset-top)) 22px 64px}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+  main{max-width:600px;margin:0 auto;padding:max(56px,env(safe-area-inset-top)) 22px 64px}
+  main.wide{max-width:1040px}
   button,input{font:inherit;color:inherit}
-  :focus-visible{outline:2px solid var(--wine);outline-offset:3px}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  [hidden]{display:none!important}
 
-  /* Navne */
   .names{text-align:center;margin:0 0 28px;font-family:var(--serif);font-weight:400;
          font-size:clamp(60px,18vw,96px);line-height:.92;letter-spacing:-.01em}
   .names span{display:block}
-  .names .amp{font-style:italic;color:var(--wine);font-size:.62em;line-height:1.15}
+  .names .amp{font-style:italic;font-size:.62em;line-height:1.15}
   .date{text-align:center;color:var(--muted);font-size:15px;margin:-10px 0 34px}
-  .intro{text-align:center;margin:0 auto 34px;max-width:30em;text-wrap:pretty}
 
-  /* Upload */
-  .upload-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
-    min-height:60px;border:0;border-radius:999px;background:var(--wine);color:#fff;
-    font-weight:600;font-size:18px;cursor:pointer;transition:transform .15s,background .15s}
-  .upload-btn:hover{background:#3a3835}
-  .upload-btn:active{transform:scale(.985)}
-  .upload-btn svg{width:22px;height:22px}
-  .hint{text-align:center;color:var(--muted);font-size:14px;margin:12px 0 0}
-  #file,#camera{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-  .actions{display:grid;gap:10px}
-  .upload-btn.secondary{background:transparent;color:var(--wine);border:1.5px solid var(--wine);min-height:56px;font-size:17px}
-  .upload-btn.secondary:hover{background:var(--wine-soft)}
-
-  /* Fotojagt */
-  .hunt{margin-top:56px}
-  .hunt h2{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.1;margin:0 0 6px;text-align:center}
-  .hunt-sub{text-align:center;color:var(--muted);font-size:15px;margin:0 auto 22px;max-width:28em}
-  .tasks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-  .tasks li{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:6px;border-bottom:1px solid var(--line);min-height:62px}
-  .check{all:unset;width:44px;height:44px;display:grid;place-items:center;cursor:pointer}
-  .check span{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);
-    display:grid;place-items:center;transition:background .2s,border-color .2s,transform .25s}
-  .check svg{width:14px;height:14px;color:#fff;opacity:0;transition:opacity .2s}
-  .done .check span{background:var(--olive);border-color:var(--olive);animation:pop .35s ease}
-  .done .check svg{opacity:1}
-  @keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
-  .task-text{all:unset;cursor:pointer;padding:12px 0;font-size:16px;line-height:1.35}
-  .done .task-text{color:var(--muted)}
-  .snap{all:unset;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;color:var(--wine);border-radius:50%}
-  .snap:hover{background:var(--wine-soft)}
-  .snap svg{width:22px;height:22px}
-  .check:focus-visible,.task-text:focus-visible,.snap:focus-visible{outline:2px solid var(--wine);outline-offset:2px;border-radius:8px}
-  .hunt-progress{text-align:center;margin:18px 0 0;color:var(--muted);font-size:15px;min-height:1.5em}
-  .hunt-progress.all{font-family:var(--serif);font-size:24px;color:var(--wine)}
-  .tip{text-align:center;color:var(--muted);font-size:14px;margin:8px 0 0}
-
-  .queue{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px}
-  .queue li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;
-    background:var(--surface);border-radius:12px;padding:8px 12px 8px 8px;font-size:14px}
-  .queue .thumb{width:44px;height:44px;border-radius:8px;background:var(--wine-soft);object-fit:cover}
-  .queue .bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
-  .queue .bar i{display:block;height:100%;width:0;background:var(--wine);transition:width .2s}
-  .queue .state{color:var(--muted);white-space:nowrap}
-  .queue .done .state{color:var(--wine);font-weight:600}
-  .queue .failed .state{color:var(--error)}
-  .queue .removed{opacity:.55}
-  .queue .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .thanks{text-align:center;margin:20px 0 0;font-family:var(--serif);font-size:26px;color:var(--wine)}
-
-  /* Album */
-  .album{margin-top:64px;border-top:1px solid var(--line);padding-top:40px}
-  .album h2{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.1;margin:0 0 6px;text-align:center}
-  .album .count{text-align:center;color:var(--muted);margin:0 0 26px}
-  .locked{background:var(--surface);border-radius:var(--radius);padding:28px 22px;text-align:center}
-  .lock-ic{width:44px;height:44px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;
-    background:var(--wine-soft);color:var(--wine)}
+  /* Lås */
+  .locked{background:var(--surface);border-radius:var(--radius);padding:30px 22px;text-align:center;max-width:460px;margin:0 auto}
+  .lock-ic{width:44px;height:44px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:var(--soft)}
   .lock-ic svg{width:20px;height:20px}
   .locked p{margin:0 0 18px;color:var(--muted);font-size:15px}
   .code-row{display:flex;gap:8px;max-width:340px;margin:0 auto}
-  .code-row input{flex:1;min-width:0;height:50px;border:1px solid var(--line);border-radius:999px;
-    padding:0 18px;background:var(--paper);font-size:16px}
-  .code-row button{height:50px;padding:0 20px;border-radius:999px;border:1px solid var(--wine);
-    background:transparent;color:var(--wine);font-weight:600;cursor:pointer}
-  .code-row button:hover{background:var(--wine);color:#fff}
+  .code-row input{flex:1;min-width:0;height:50px;border:1px solid var(--line);border-radius:999px;padding:0 18px;background:var(--paper);font-size:16px}
+  .code-row button{height:50px;padding:0 22px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer}
   .err{color:var(--error);font-size:14px;min-height:1.4em;margin:10px 0 0}
 
-  .tools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin:0 0 16px}
-  .ghost{border:1px solid var(--line);background:var(--surface);border-radius:999px;height:44px;padding:0 18px;
-    font-weight:500;cursor:pointer}
-  .ghost:hover{border-color:var(--wine);color:var(--wine)}
-  .switch{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);cursor:pointer}
-  .switch input{appearance:none;width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;
-    cursor:pointer;transition:background .2s;margin:0}
-  .switch input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
-    background:#fff;transition:transform .2s}
-  .switch input:checked{background:var(--wine)}
-  .switch input:checked::after{transform:translateX(18px)}
-  .zip-status{font-size:14px;color:var(--muted);margin:-6px 0 14px}
+  /* Hilsen */
+  .note{margin:0 auto 46px;padding:28px 26px 24px;background:var(--surface);border-radius:var(--radius);max-width:34em}
+  .note blockquote{margin:0;font-family:var(--serif);font-size:22px;line-height:1.45;white-space:pre-line;text-wrap:pretty}
+  .note figcaption{margin-top:14px;color:var(--muted);font-size:15px}
+
+  /* Mapper */
+  .tabs{display:flex;justify-content:center;gap:6px;margin:0 auto 18px;background:var(--soft);border-radius:999px;padding:5px;width:max-content;max-width:100%}
+  .tab{border:0;background:transparent;border-radius:999px;height:42px;padding:0 20px;cursor:pointer;font-weight:500;white-space:nowrap}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .tab small{opacity:.65;font-weight:400;margin-left:4px}
+  .folder-sub{text-align:center;color:var(--muted);font-size:15px;margin:0 auto 22px;max-width:32em}
+
+  .dl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border-radius:999px;padding:0 22px;
+       border:1.5px solid var(--ink);background:var(--ink);color:#fff;font-weight:600;cursor:pointer;text-decoration:none}
+  .btn.secondary{background:transparent;color:var(--ink)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn svg{width:18px;height:18px}
+  .status{text-align:center;font-size:14px;color:var(--muted);min-height:1.5em;margin:0 0 22px}
+  .status .bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;max-width:360px;margin:8px auto 0}
+  .status .bar i{display:block;height:100%;width:0;background:var(--ink);transition:width .3s}
 
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;border-radius:var(--radius);overflow:hidden}
-  .grid button{all:unset;position:relative;aspect-ratio:1;cursor:pointer;background:var(--wine-soft);overflow:hidden}
-  .grid button:focus-visible{outline:2px solid var(--wine);outline-offset:-2px}
+  @media (min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+  @media (min-width:960px){.grid{grid-template-columns:repeat(5,1fr)}}
+  .grid button{all:unset;position:relative;aspect-ratio:1;cursor:pointer;background:var(--soft);overflow:hidden}
+  .grid button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
   .grid img,.grid video{width:100%;height:100%;object-fit:cover;display:block}
-  .grid .play{position:absolute;right:6px;bottom:6px;width:24px;height:24px;border-radius:50%;
-    background:rgba(255,255,255,.9);display:grid;place-items:center;color:var(--ink)}
-  .grid .play svg{width:10px;height:10px;margin-left:2px}
+  .grid .badge{position:absolute;right:6px;bottom:6px;height:22px;padding:0 8px 0 6px;border-radius:999px;background:rgba(255,255,255,.92);
+    display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600}
+  .grid .badge svg{width:9px;height:9px}
+  .grid .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;color:var(--muted);padding:6px;text-align:center;word-break:break-all}
   .empty{text-align:center;color:var(--muted);background:var(--surface);border-radius:var(--radius);padding:28px}
 
+  /* Ingrids upload */
+  .admin{margin:56px auto 0;max-width:600px;background:var(--surface);border-radius:var(--radius);padding:24px 22px}
+  .admin h2{font-family:var(--serif);font-weight:400;font-size:32px;margin:0 0 4px}
+  .admin p{margin:0 0 16px;color:var(--muted);font-size:15px}
+  .drop{display:grid;place-items:center;gap:6px;border:1.5px dashed var(--line);border-radius:12px;padding:26px 16px;text-align:center;cursor:pointer;color:var(--muted);font-size:15px}
+  .drop.over{border-color:var(--ink);background:var(--paper)}
+  .drop strong{color:var(--ink)}
+  #file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .queue{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:6px;max-height:420px;overflow:auto}
+  .queue li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;background:var(--paper);border-radius:10px;padding:9px 12px;font-size:14px}
+  .queue .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .queue .state{color:var(--muted);white-space:nowrap}
+  .queue .bar{grid-column:1/-1;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+  .queue .bar i{display:block;height:100%;width:0;background:var(--ink)}
+  .queue .ok .state{color:var(--ink);font-weight:600}
+  .queue .bad .state{color:var(--error)}
+  .sum{font-size:14px;margin:12px 0 0;color:var(--muted)}
+
   /* Lightbox */
-  .lightbox{position:fixed;inset:0;background:rgba(20,23,24,.94);display:none;align-items:center;justify-content:center;z-index:10;
-    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .lightbox{position:fixed;inset:0;background:rgba(20,19,18,.97);display:none;align-items:center;justify-content:center;z-index:10}
   .lightbox.open{display:flex}
-  .lightbox img,.lightbox video{max-width:100vw;max-height:86vh;object-fit:contain}
-  .lb-btn{position:absolute;border:0;background:rgba(255,255,255,.12);color:#fff;width:46px;height:46px;border-radius:50%;
-    cursor:pointer;display:grid;place-items:center}
+  #lbMedia{display:contents}
+  .lightbox img,.lightbox video{max-width:100vw;max-height:82vh;object-fit:contain}
+  .lb-btn{position:absolute;border:0;background:rgba(255,255,255,.14);color:#fff;width:46px;height:46px;border-radius:50%;cursor:pointer;display:grid;place-items:center;text-decoration:none}
   .lb-btn svg{width:20px;height:20px}
   .lb-close{top:max(16px,env(safe-area-inset-top));right:16px}
   .lb-prev{left:12px;top:50%;transform:translateY(-50%)}
   .lb-next{right:12px;top:50%;transform:translateY(-50%)}
-
-  /* Personlig hilsen øverst */
-  .note{margin:0 auto 38px;padding:26px 24px 22px;background:var(--surface);border-radius:var(--radius);max-width:32em}
-  .note blockquote{margin:0;font-family:var(--serif);font-size:21px;line-height:1.45;white-space:pre-line;text-wrap:pretty}
-  .note figcaption{margin-top:12px;color:var(--muted);font-size:15px}
-
-  /* Hilsner */
-  .greet{margin-top:56px}
-  .greet h2,.greetings h3{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.1;margin:0 0 6px;text-align:center}
-  .greet-sub{text-align:center;color:var(--muted);font-size:15px;margin:0 auto 20px;max-width:28em}
-  .greet form{display:grid;gap:10px}
-  .greet textarea,.greet input{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--surface);
-    padding:14px 16px;font-size:16px;resize:vertical}
-  .greet textarea{min-height:130px;line-height:1.5}
-  .greet-row{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted);font-size:13px}
-  .greet .upload-btn{min-height:54px;font-size:17px}
-  .greet-done{background:var(--surface);border-radius:var(--radius);padding:22px;text-align:center}
-  .greet-done p{margin:0 0 12px;font-family:var(--serif);font-size:24px}
-  .linkish{all:unset;cursor:pointer;color:var(--ink);text-decoration:underline;text-underline-offset:3px;font-size:15px;padding:6px}
-  .linkish:focus-visible{outline:2px solid var(--wine);border-radius:6px}
-  .undo{all:unset;cursor:pointer;font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:6px 2px}
-  .greetings{margin-top:40px}
-  .greetings h3{font-size:30px;margin-bottom:16px}
-  .gcard{position:relative;background:var(--surface);border-radius:12px;padding:18px 44px 18px 20px;margin:0 0 10px}
-  .gcard p{margin:0;white-space:pre-line}
-  .gcard .from{margin-top:8px;color:var(--muted);font-size:14px}
-  .gdel{position:absolute;top:8px;right:8px;width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer}
-  .gdel:hover{background:var(--wine-soft);color:var(--ink)}
-
-  .lb-del{bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:auto;padding:0 18px;
-    border-radius:999px;font-size:14px}
-  .lb-del.armed{background:#B3261E}
+  .lb-bar{position:absolute;left:0;right:0;bottom:max(16px,env(safe-area-inset-bottom));display:flex;justify-content:center;gap:10px;align-items:center}
+  .lb-bar .lb-btn{position:static;width:auto;padding:0 18px;border-radius:999px;font-size:14px;gap:8px;display:inline-flex;align-items:center}
+  .lb-bar .armed{background:#B3261E}
+  .lb-count{color:rgba(255,255,255,.7);font-size:13px}
 
   footer{text-align:center;margin-top:72px;font-family:var(--serif);font-size:24px;color:var(--muted)}
-  [hidden]{display:none!important}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<main>
+<main id="main">
   <h1 class="names"><span>Birgit</span><span class="amp">&amp;</span><span>Pætur</span></h1>
   <p class="date" id="date"></p>
 
-  <p class="intro">Har du taget billeder eller små videoer i aften, må du meget gerne dele dem her. Så kan Birgit og Pætur altid se tilbage på en smuk dag med familie og venner.</p>
-
-  <figure class="note" id="note">
-    <blockquote id="noteText"></blockquote>
-    <figcaption id="noteFrom"></figcaption>
-  </figure>
-
-  <div class="actions">
-    <label class="upload-btn" for="camera" role="button" tabindex="0" data-for="camera">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-      Tag et billede
-    </label>
-    <label class="upload-btn secondary" for="file" role="button" tabindex="0" data-for="file">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9.5" r="1.5"/><path d="m20 15-4.5-4.5L6 20"/></svg>
-      Vælg fra kamerarullen
-    </label>
-  </div>
-  <input type="file" id="camera" accept="image/*,video/*" capture="environment">
-  <input type="file" id="file" accept="image/*,video/*" multiple>
-  <p class="hint">Fra kamerarullen kan du vælge flere på én gang. Der står ikke navn på det, du deler.</p>
-
-  <ul class="queue" id="queue" aria-live="polite"></ul>
-  <p class="thanks" id="thanks" hidden>Tak fordi du delte</p>
-
-  <section class="hunt" aria-labelledby="huntTitle">
-    <h2 id="huntTitle">Fotojagt</h2>
-    <p class="hunt-sub">Hvis du har lyst. Tryk på en opgave for at tage billedet, eller kryds af selv.</p>
-    <ol class="tasks" id="tasks"></ol>
-    <p class="hunt-progress" id="huntProgress"></p>
-    <p class="tip">Tip: Brug blitz – så bliver de bedste.</p>
-  </section>
-
-  <section class="greet" aria-labelledby="greetTitle">
-    <h2 id="greetTitle">Skriv en hilsen</h2>
-    <p class="greet-sub">Et par ord til Birgit og Pætur. Du behøver ikke at tage et billede.</p>
-    <form id="greetForm">
-      <textarea id="greetMsg" maxlength="800" placeholder="Kære Birgit og Pætur …" aria-label="Din hilsen"></textarea>
-      <input id="greetName" maxlength="60" autocomplete="name" placeholder="Fra (valgfrit)" aria-label="Fra, valgfrit">
-      <div class="greet-row"><span id="greetCount">0 / 800</span></div>
-      <button class="upload-btn" type="submit" id="greetBtn">Send hilsen</button>
-      <p class="err" id="greetErr" role="alert"></p>
+  <!-- Låst -->
+  <div class="locked" id="locked">
+    <div class="lock-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+    <p>Billeder og video fra jeres bryllupsdag. Skriv koden for at åbne albummet.</p>
+    <form class="code-row" id="codeForm">
+      <input id="code" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Kode" aria-label="Kode til albummet">
+      <button type="submit" id="codeBtn">Åbn</button>
     </form>
-    <div class="greet-done" id="greetDone" hidden>
-      <p>Tak – din hilsen er sendt</p>
-      <button class="undo" type="button" id="greetUndo">Fortryd</button>
-      <button class="linkish" type="button" id="greetMore">Skriv en hilsen mere</button>
-    </div>
-  </section>
+    <p class="err" id="codeErr" role="alert"></p>
+  </div>
 
-  <section class="album" aria-labelledby="albumTitle">
-    <h2 id="albumTitle">Albummet</h2>
-    <p class="count" id="count">&nbsp;</p>
+  <!-- Åbent -->
+  <div id="open" hidden>
+    <figure class="note" id="note">
+      <blockquote id="noteText"></blockquote>
+      <figcaption id="noteFrom"></figcaption>
+    </figure>
 
-    <div class="locked" id="locked">
-      <div class="lock-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
-      <p>Albummet er låst indtil videre. Har du fået en kode, kan du åbne det her.</p>
-      <form class="code-row" id="codeForm">
-        <input id="code" type="password" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Kode" aria-label="Kode til albummet">
-        <button type="submit">Åbn</button>
-      </form>
-      <p class="err" id="codeErr" role="alert"></p>
-    </div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <p class="folder-sub" id="folderSub"></p>
 
-    <div id="open" hidden>
-      <div class="tools" id="adminTools" hidden>
-        <button class="ghost" id="zipBtn" type="button">Download alle som zip</button>
-        <label class="switch"><input type="checkbox" id="publicToggle"> Synligt for alle gæster</label>
-      </div>
-      <p class="zip-status" id="zipStatus" hidden></p>
-      <div class="grid" id="grid"></div>
-      <p class="empty" id="empty" hidden>Der er ikke delt billeder endnu.</p>
-      <div class="greetings" id="greetings" hidden>
-        <h3>Hilsner</h3>
-        <div id="greetList"></div>
-      </div>
+    <div class="dl">
+      <button class="btn" id="zipAll" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+        <span>Hent hele albummet</span>
+      </button>
+      <button class="btn secondary" id="zipFolder" type="button"><span>Kun denne mappe</span></button>
     </div>
-  </section>
+    <div class="status" id="status" aria-live="polite"></div>
+
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>Der er ikke lagt noget i denne mappe endnu.</p>
+
+    <section class="admin" id="admin" hidden>
+      <h2>Tilføj billeder og video</h2>
+      <p>Kun du kan se dette. Filerne lægges i den mappe, der er valgt ovenfor: <strong id="adminFolder"></strong>. Lad siden være åben, til alt er uploadet.</p>
+      <label class="drop" id="drop" for="file">
+        <strong>Vælg filer</strong>
+        <span>eller træk dem herind – originalerne bevares</span>
+      </label>
+      <input type="file" id="file" multiple accept="image/*,video/*,.heic,.HEIC,.mov,.MOV,.mp4,.MP4">
+      <ul class="queue" id="queue"></ul>
+      <p class="sum" id="sum"></p>
+    </section>
+  </div>
 
   <footer>Stort tillykke, Birgit og Pætur</footer>
 </main>
@@ -268,513 +171,398 @@
   <button class="lb-btn lb-close" id="lbClose" aria-label="Luk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <button class="lb-btn lb-prev" id="lbPrev" aria-label="Forrige"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <div id="lbMedia"></div>
-  <button class="lb-btn lb-del" id="lbDel" type="button" hidden>Slet billede</button>
   <button class="lb-btn lb-next" id="lbNext" aria-label="Næste"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="lb-bar">
+    <a class="lb-btn" id="lbDl" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Hent original</a>
+    <span class="lb-count" id="lbCount"></span>
+    <button class="lb-btn" id="lbDel" type="button" hidden>Slet</button>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/client-zip@2.5.0/worker.js"></script>
 <script>
 /* ---------- Indstillinger ---------- */
 const CONFIG = {
   projectRef: "vmneopkocogduzwisiah",
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtbmVvcGtvY29nZHV6d2lzaWFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzODU2MzMsImV4cCI6MjEwNjk2MTYzM30.ZkjvRe0qGHMNghG9e6GVSEys81G4ezDw30aV5hxIV0w",
-  bucket: "album",
   dateText: "17. oktober 2026",
-  maxVideoMB: 500,                   // Supabase Pro: bucket-grænsen er også 500 MB
-  maxImageSide: 3200,                // billeder skaleres ned til denne længste side
-  zipName: "Birgit-og-Paetur-bryllup.zip",
-  // Din egen hilsen øverst på siden og forrest i hilsen-PDF'en (pladsholder – skriv den færdig her)
+  zipName: "Birgit og Pætur – bryllup",
+  folders: [
+    { id: "redigeret",  label: "Redigeret",  sub: "Mine udvalgte og redigerede billeder og videoer." },
+    { id: "uredigeret", label: "Uredigeret", sub: "Alt, som det kom ud af kameraet." },
+  ],
   note: {
-    // Tom tekst = feltet skjules på siden og i PDF'en
-    text: "Kære Birgit og Pætur\n\nI dag samles familie og venner for at fejre jer to, og jeg er så glad for at være en af dem. Alle billeder, videoer og hilsner, der bliver delt her i aften, er til jer, så I kan opleve dagen igen, også de øjeblikke I ikke selv så. Stort tillykke.",
+    text: "Kære Birgit og Pætur\n\nTil jeres bryllup samledes familie og venner for at fejre jer to, og jeg er så glad for, at jeg var en af dem. Her har jeg samlet de billeder og videoer, jeg tog i løbet af dagen, så I kan opleve den igen, også de øjeblikke I ikke selv så. Stort tillykke.",
     from: "Kærlig hilsen Ingrid",
   },
-  undoMinutes: 10,
-  tasks: [
-    "Birgit og Pætur, når de ikke ser det",
-    "Brudeparret med et glas i hånden",
-    "Et billede af dig",
-    "Hele dit bord på ét billede",
-    "Nogen der danser, gerne med blitz",
-    "Nogen der griner så meget, at de græder",
-    "En selfie med brudeparret",
-    "Den fineste detalje i blomsterne eller på bordet",
-  ],
 };
 /* ----------------------------------- */
 
 const $ = (id) => document.getElementById(id);
 const API = `https://${CONFIG.projectRef}.supabase.co/functions/v1/album`;
-const TUS = `https://${CONFIG.projectRef}.storage.supabase.co/storage/v1/upload/resumable`;
+const TUS = `https://${CONFIG.projectRef}.storage.supabase.co/storage/v1/upload/resumable/sign`;
 $("date").textContent = CONFIG.dateText;
+$("noteText").textContent = CONFIG.note.text;
+$("noteFrom").textContent = CONFIG.note.from;
+if (!CONFIG.note.text.trim()) $("note").hidden = true;
 
 const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
   set(k,v){ try { localStorage.setItem(k,v); } catch {} },
+  del(k){ try { localStorage.removeItem(k); } catch {} },
 };
+const fmtSize = (b) => b >= 1e9 ? (b/1e9).toFixed(1).replace(".",",")+" GB" : b >= 1e6 ? Math.round(b/1e6)+" MB" : Math.max(1,Math.round(b/1e3))+" KB";
+const isVideo = (f) => (f.type||"").startsWith("video/") || /\.(mov|mp4|m4v|avi|mts|webm)$/i.test(f.name);
 
 async function api(body){
-  const res = await fetch(API, {
-    method:"POST",
-    headers:{ "Content-Type":"application/json", apikey: CONFIG.anonKey },
-    body: JSON.stringify(body),
-  });
+  const res = await fetch(API, { method:"POST", headers:{ "Content-Type":"application/json", apikey: CONFIG.anonKey }, body: JSON.stringify({ ...body, code: state.code }) });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw Object.assign(new Error(data.error || "server"), { code: data.error, status: res.status });
   return data;
 }
 
-/* ---------- Upload ---------- */
-if (CONFIG.note.text.trim()) {
-  $("noteText").textContent = CONFIG.note.text;
-  $("noteFrom").textContent = CONFIG.note.from;
-} else { $("note").hidden = true; }
-const UNDO_MS = CONFIG.undoMinutes * 60 * 1000;
-const queue = $("queue");
-let active = 0;
-let currentTask = null; // opgave-nummer (1-8), når kameraet åbnes fra fotojagten
-document.querySelectorAll("label[data-for]").forEach((l) => {
-  l.addEventListener("click", () => { currentTask = null; });
-  l.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); currentTask = null; $(l.dataset.for).click(); }
-  });
-});
-["file", "camera"].forEach((id) => $(id).addEventListener("change", (e) => {
-  const files = [...e.target.files];
-  e.target.value = "";
-  if (!files.length) return;
-  $("thanks").hidden = true;
-  const task = currentTask; currentTask = null;
-  files.forEach((f) => enqueue(f, task));
-  runQueue();
-}));
-window.addEventListener("beforeunload", (e) => { if (active > 0) { e.preventDefault(); e.returnValue = ""; } });
+const state = { code: "", isAdmin: false, files: [], folder: CONFIG.folders[0].id, lbList: [], lbIndex: 0 };
 
-const pending = [];
-function enqueue(file, task){
-  const li = document.createElement("li");
-  const isVideo = file.type.startsWith("video/");
-  const thumb = document.createElement(isVideo ? "div" : "img");
-  thumb.className = "thumb";
-  if (!isVideo) { thumb.src = URL.createObjectURL(file); thumb.alt = ""; }
-  li.append(thumb);
-  li.insertAdjacentHTML("beforeend",
-    `<div><div class="label"></div><div class="bar"><i></i></div></div><span class="state">Venter</span>`);
-  li.querySelector(".label").textContent = task ? CONFIG.tasks[task - 1] : (isVideo ? "Video" : "Billede");
-  queue.prepend(li);
-  pending.push({ file, li, task });
-}
-
-let running = false;
-async function runQueue(){
-  if (running) return;
-  running = true;
-  // to ad gangen giver god fart uden at kvæle hotellets wifi
-  const worker = async () => { while (pending.length) await uploadOne(pending.shift()); };
-  await Promise.all([worker(), worker()]);
-  running = false;
-  if (!queue.querySelector(".failed")) $("thanks").hidden = false;
-  refreshCount();
-}
-
-function setState(li, text, cls){ li.querySelector(".state").textContent = text; if (cls) li.className = cls; }
-function setProgress(li, p){ li.querySelector(".bar i").style.width = `${Math.round(p*100)}%`; }
-
-async function uploadOne({ file, li, task }){
-  active++;
-  try {
-    const isVideo = file.type.startsWith("video/");
-    if (isVideo && file.size > CONFIG.maxVideoMB * 1024 * 1024) {
-      setState(li, `For stor (maks ${CONFIG.maxVideoMB} MB)`, "failed");
-      return;
-    }
-    setState(li, "Forbereder");
-    const blob = isVideo ? file : await shrinkImage(file);
-    if (!isVideo && blob.size > CONFIG.maxVideoMB * 1024 * 1024) {
-      setState(li, "Filen er for stor", "failed"); return;
-    }
-    const ext = extFor(blob.type || file.type, file.name);
-    const name = `${task ? `opgave-${task}-` : ""}${Date.now()}-${[...crypto.getRandomValues(new Uint8Array(9))].map((x) => x.toString(36).padStart(2,"0")).join("")}.${ext}`;
-    setState(li, "0 %");
-    await tusUpload(blob, name, blob.type || file.type || "application/octet-stream", (p) => {
-      setProgress(li, p); setState(li, `${Math.round(p*100)} %`);
-    });
-    setProgress(li, 1);
-    setState(li, "Delt", "done");
-    if (task) setTaskDone(task, true);
-    addUndo(li, name, task);
-  } catch (err) {
-    console.error(err);
-    setState(li, "Fejlede", "failed");
-    const retry = document.createElement("button");
-    retry.className = "ghost"; retry.style.height = "32px"; retry.style.padding = "0 12px"; retry.textContent = "Prøv igen";
-    retry.onclick = () => { li.className = ""; retry.remove(); pending.push({ file, li, task }); runQueue(); };
-    li.querySelector(".state").after(retry);
-    li.style.gridTemplateColumns = "44px 1fr auto auto";
-  } finally { active--; }
-}
-
-function tusUpload(blob, objectName, contentType, onProgress){
-  return new Promise((resolve, reject) => {
-    const up = new tus.Upload(blob, {
-      endpoint: TUS,
-      retryDelays: [0, 1500, 3000, 6000, 12000, 20000],
-      headers: { authorization: `Bearer ${CONFIG.anonKey}`, apikey: CONFIG.anonKey, "x-upsert": "false" },
-      uploadDataDuringCreation: true,
-      removeFingerprintOnSuccess: true,
-      chunkSize: 6 * 1024 * 1024, // krævet af Supabase
-      metadata: { bucketName: CONFIG.bucket, objectName, contentType, cacheControl: "3600" },
-      onError: reject,
-      onProgress: (sent, total) => onProgress(total ? sent / total : 0),
-      onSuccess: resolve,
-    });
-    up.findPreviousUploads().then((prev) => { if (prev.length) up.resumeFromPreviousUpload(prev[0]); up.start(); });
-  });
-}
-
-async function shrinkImage(file){
-  if (/gif|svg/.test(file.type)) return file;
-  try {
-    const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
-    const scale = Math.min(1, CONFIG.maxImageSide / Math.max(bmp.width, bmp.height));
-    if (scale === 1 && file.size < 4 * 1024 * 1024 && file.type === "image/jpeg") return file;
-    const c = document.createElement("canvas");
-    c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
-    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-    const out = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.9));
-    return out && out.size < file.size ? out : file;
-  } catch { return file; } // fx HEIC på computer: send originalen
-}
-
-function extFor(type, name){
-  const map = { "image/jpeg":"jpg","image/png":"png","image/heic":"heic","image/heif":"heif","image/webp":"webp",
-    "image/gif":"gif","video/mp4":"mp4","video/quicktime":"mov","video/webm":"webm" };
-  return map[type] || (name.split(".").pop() || "bin").toLowerCase().slice(0,5);
-}
-
-function addUndo(li, name, task){
-  const b = document.createElement("button");
-  b.type = "button"; b.className = "undo"; b.textContent = "Fortryd";
-  b.setAttribute("aria-label", "Fortryd og fjern det delte");
-  li.style.gridTemplateColumns = "44px 1fr auto auto";
-  li.querySelector(".state").after(b);
-  const timer = setTimeout(() => { b.remove(); li.style.gridTemplateColumns = ""; }, UNDO_MS);
-  b.onclick = async () => {
-    b.disabled = true;
-    try {
-      await api({ action:"undo", name });
-      clearTimeout(timer); b.remove(); li.style.gridTemplateColumns = "";
-      setState(li, "Fjernet", "removed");
-      li.querySelector(".bar i").style.width = "0";
-      if (task) setTaskDone(task, false);
-      refreshCount();
-    } catch (err) {
-      b.disabled = false;
-      b.textContent = err.code === "too_late" ? "For sent" : "Prøv igen";
-    }
-  };
-}
-
-/* ---------- Hilsner ---------- */
-let lastGreeting = null, greetTimer = null;
-$("greetMsg").addEventListener("input", () => { $("greetCount").textContent = `${$("greetMsg").value.length} / 800`; });
-$("greetForm").addEventListener("submit", async (e) => {
+/* ---------- Kode ---------- */
+$("codeForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const message = $("greetMsg").value.trim();
-  if (!message) { $("greetErr").textContent = "Skriv et par ord først."; return; }
-  $("greetErr").textContent = ""; $("greetBtn").disabled = true;
-  try {
-    lastGreeting = await api({ action:"greet", message, name: $("greetName").value.trim() });
-    $("greetForm").hidden = true; $("greetDone").hidden = false;
-    $("greetUndo").hidden = false; $("greetUndo").textContent = "Fortryd";
-    clearTimeout(greetTimer);
-    greetTimer = setTimeout(() => { $("greetUndo").hidden = true; }, UNDO_MS);
-    refreshCount();
-  } catch {
-    $("greetErr").textContent = "Hilsenen blev ikke sendt. Tjek forbindelsen og prøv igen.";
-  } finally { $("greetBtn").disabled = false; }
+  const code = $("code").value.trim();
+  if (!code) return;
+  await openAlbum(code, true);
 });
-$("greetUndo").onclick = async () => {
-  if (!lastGreeting) return;
+
+async function openAlbum(code, fromForm){
+  $("codeErr").textContent = "";
+  $("codeBtn").disabled = true;
+  state.code = code;
   try {
-    await api({ action:"undoGreeting", id: lastGreeting.id, token: lastGreeting.token });
-    clearTimeout(greetTimer); lastGreeting = null;
-    $("greetDone").hidden = true; $("greetForm").hidden = false; // teksten står der stadig, så den kan rettes
-    refreshCount();
-  } catch (err) { $("greetUndo").textContent = err.code === "too_late" ? "For sent at fortryde" : "Prøv igen"; }
-};
-$("greetMore").onclick = () => {
-  $("greetMsg").value = ""; $("greetName").value = ""; $("greetCount").textContent = "0 / 800";
-  $("greetDone").hidden = true; $("greetForm").hidden = false; $("greetMsg").focus();
-};
-
-/* ---------- Album ---------- */
-let files = [];
-let greetings = [];
-let isAdmin = false;
-let code = store.get("album-code") || "";
-
-async function refreshCount(){
-  try {
-    const s = await api({ action:"status" });
-    const parts = [];
-    if (s.count) parts.push(s.count === 1 ? "1 billede eller video" : `${s.count} billeder og videoer`);
-    if (s.greetings) parts.push(s.greetings === 1 ? "1 hilsen" : `${s.greetings} hilsner`);
-    $("count").textContent = parts.length ? `${parts.join(" og ")} er delt` : "Endnu ikke noget delt";
-    return s;
-  } catch { $("count").textContent = " "; return null; }
+    const data = await api({ action: "open" });
+    state.isAdmin = data.isAdmin;
+    state.files = data.files;
+    store.set("album-code", code);
+    $("locked").hidden = true;
+    $("open").hidden = false;
+    $("main").classList.add("wide");
+    $("admin").hidden = !state.isAdmin;
+    render();
+  } catch (err) {
+    state.code = "";
+    if (err.status === 401) { store.del("album-code"); if (fromForm) $("codeErr").textContent = "Koden passer ikke. Prøv igen."; }
+    else $("codeErr").textContent = "Der skete en fejl. Prøv igen om lidt.";
+  } finally { $("codeBtn").disabled = false; }
 }
 
-async function openAlbum(withCode){
-  const data = await api({ action:"open", code: withCode || undefined });
-  files = data.files; // nyeste først (sorteret af serveren)
-  greetings = data.greetings || [];
-  isAdmin = !!data.isAdmin;
-  $("locked").hidden = true;
-  $("open").hidden = false;
-  $("adminTools").hidden = !data.isAdmin;
-  $("publicToggle").checked = data.isPublic;
-  renderGrid();
-  renderGreetings();
+async function refresh(){
+  try { const data = await api({ action: "open" }); state.files = data.files; render(); } catch {}
 }
 
-function renderGreetings(){
-  $("greetings").hidden = greetings.length === 0;
-  const list = $("greetList"); list.innerHTML = "";
-  greetings.forEach((g) => {
-    const c = document.createElement("article"); c.className = "gcard";
-    const p = document.createElement("p"); p.textContent = g.message; c.append(p);
-    if (g.name) { const f = document.createElement("p"); f.className = "from"; f.textContent = `– ${g.name}`; c.append(f); }
-    if (isAdmin) {
-      const d = document.createElement("button"); d.className = "gdel"; d.type = "button";
-      d.setAttribute("aria-label", "Slet hilsen"); d.textContent = "✕";
-      d.onclick = async () => {
-        if (!d.classList.contains("armed")) { d.classList.add("armed"); d.textContent = "Slet?"; d.style.width = "auto"; d.style.padding = "0 10px"; return; }
-        try { await api({ action:"deleteGreeting", code, id: g.id }); greetings = greetings.filter((x) => x.id !== g.id); renderGreetings(); refreshCount(); }
-        catch { d.textContent = "Fejl"; }
-      };
-      c.append(d);
-    }
-    list.append(c);
-  });
-}
+/* ---------- Visning ---------- */
+const inFolder = (id) => state.files.filter((f) => f.folder === id);
+const sumSize = (list) => list.reduce((a, f) => a + (f.size||0), 0);
 
-function renderGrid(){
-  const grid = $("grid");
-  grid.innerHTML = "";
-  $("empty").hidden = files.length > 0;
-  files.forEach((f, i) => {
+function render(){
+  const tabs = $("tabs"); tabs.innerHTML = "";
+  for (const f of CONFIG.folders) {
     const b = document.createElement("button");
-    b.setAttribute("aria-label", f.type.startsWith("video/") ? "Åbn video" : "Åbn billede");
-    if (f.type.startsWith("video/")) {
-      const v = document.createElement("video");
-      v.src = f.url + "#t=0.1"; v.muted = true; v.playsInline = true; v.preload = "metadata";
-      b.append(v);
-      b.insertAdjacentHTML("beforeend", `<span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg></span>`);
+    b.className = "tab"; b.type = "button"; b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", String(f.id === state.folder));
+    b.innerHTML = `${f.label}<small>${inFolder(f.id).length}</small>`;
+    b.onclick = () => { state.folder = f.id; render(); };
+    tabs.append(b);
+  }
+  const cur = CONFIG.folders.find((f) => f.id === state.folder);
+  $("folderSub").textContent = cur.sub;
+  $("adminFolder").textContent = cur.label;
+
+  const all = state.files, list = inFolder(state.folder);
+  $("zipAll").querySelector("span").textContent = all.length ? `Hent hele albummet · ${fmtSize(sumSize(all))}` : "Hent hele albummet";
+  $("zipAll").disabled = !all.length || zipping;
+  $("zipFolder").querySelector("span").textContent = `Kun ${cur.label.toLowerCase()}` + (list.length ? ` · ${fmtSize(sumSize(list))}` : "");
+  $("zipFolder").disabled = !list.length || zipping;
+
+  const grid = $("grid"); grid.innerHTML = "";
+  $("empty").hidden = list.length > 0;
+  list.forEach((f, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("aria-label", (isVideo(f) ? "Video " : "Billede ") + f.name);
+    if (f.thumb) {
+      const img = new Image(); img.loading = "lazy"; img.decoding = "async"; img.alt = ""; img.src = f.thumb; b.append(img);
+    } else if (isVideo(f)) {
+      const v = document.createElement("video"); v.muted = true; v.playsInline = true; v.preload = "metadata"; v.src = f.url + "#t=0.5"; b.append(v);
+    } else if (/\.(jpe?g|png|webp|gif)$/i.test(f.name)) {
+      const img = new Image(); img.loading = "lazy"; img.alt = ""; img.src = f.url; b.append(img);
     } else {
-      const img = document.createElement("img");
-      img.src = f.url; img.loading = "lazy"; img.decoding = "async"; img.alt = "";
-      b.append(img);
+      const s = document.createElement("span"); s.className = "ph"; s.textContent = f.name; b.append(s);
     }
-    b.onclick = () => showLb(i);
+    if (isVideo(f)) b.insertAdjacentHTML("beforeend", `<span class="badge"><svg viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>Video</span>`);
+    b.onclick = () => showLb(list, i);
     grid.append(b);
   });
 }
 
-$("codeForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const val = $("code").value.trim();
-  if (!val) { $("codeErr").textContent = "Skriv koden for at åbne albummet."; return; }
-  $("codeErr").textContent = "";
-  try {
-    await openAlbum(val);
-    code = val; store.set("album-code", val);
-  } catch (err) {
-    $("codeErr").textContent = err.code === "wrong_code"
-      ? "Koden passer ikke. Tjek stavningen og prøv igen."
-      : "Albummet kunne ikke åbnes lige nu. Prøv igen om lidt.";
-  }
-});
-
-$("publicToggle").addEventListener("change", async (e) => {
-  const want = e.target.checked;
-  try { await api({ action:"setPublic", code, value: want }); }
-  catch { e.target.checked = !want; alertInline("Indstillingen blev ikke gemt. Prøv igen."); }
-});
-
-function alertInline(msg){ const z = $("zipStatus"); z.hidden = false; z.textContent = msg; }
-
-$("zipBtn").addEventListener("click", async () => {
-  const btn = $("zipBtn");
-  if (!files.length) return alertInline("Der er ikke noget at downloade endnu.");
-  btn.disabled = true;
-  try {
-    const fresh = await api({ action:"open", code });   // friske links
-    const list = fresh.files.slice().reverse();          // ældste først i zip-filen
-    const zip = new JSZip();
-    let n = 0;
-    for (const f of list) {
-      n++;
-      alertInline(`Henter ${n} af ${list.length} …`);
-      const res = await fetch(f.url);
-      if (!res.ok) continue;
-      const ext = f.name.split(".").pop();
-      const m = f.name.match(/^opgave-(\d+)-/);
-      const folder = m && CONFIG.tasks[m[1] - 1] ? `Fotojagt/${m[1]}. ${CONFIG.tasks[m[1] - 1].replace(/[\\/:*?"<>|]/g, "")}/` : "";
-      zip.file(`${folder}${String(n).padStart(3,"0")}.${ext}`, await res.blob(), { binary:true });
-    }
-    if (fresh.greetings && fresh.greetings.length) {
-      alertInline("Laver hilsen-PDF …");
-      try { zip.file("Hilsner til Birgit og Paetur.pdf", await greetingsPdf(fresh.greetings)); }
-      catch (e) { console.error(e); zip.file("Hilsner.txt", fresh.greetings.map((g) => `${g.message}${g.name ? `\n– ${g.name}` : ""}`).join("\n\n---\n\n")); }
-    }
-    alertInline("Pakker zip-filen …");
-    const blob = await zip.generateAsync({ type:"blob", compression:"STORE" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob); a.download = CONFIG.zipName;
-    document.body.append(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
-    alertInline(`Zip-filen med ${list.length} filer er downloadet.`);
-  } catch (err) {
-    console.error(err);
-    alertInline("Zip-filen kunne ikke laves. Prøv igen på en computer med god forbindelse.");
-  } finally { btn.disabled = false; }
-});
-
-/* ---------- Hilsen-PDF ---------- */
-function loadScript(src){
-  return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.append(s); });
-}
-async function greetingsPdf(list){
-  if (!window.jspdf) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:"mm", format:"a5" });
-  let serif = "times";
-  try {
-    const buf = await (await fetch("https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/instrumentserif/InstrumentSerif-Regular.ttf")).arrayBuffer();
-    let bin = ""; const u8 = new Uint8Array(buf);
-    for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
-    doc.addFileToVFS("IS.ttf", btoa(bin)); doc.addFont("IS.ttf", "IS", "normal"); serif = "IS";
-  } catch (e) { console.warn("Serif-font kunne ikke hentes, bruger Times", e); }
-  const W = 148, H = 210, M = 18, TW = W - 2 * M;
-  const ink = [22, 21, 20], muted = [111, 106, 99], line = [221, 212, 198];
-  // Forside
-  doc.setFillColor(239, 232, 221); doc.rect(0, 0, W, H, "F");
-  doc.setTextColor(...ink); doc.setFont(serif, "normal"); doc.setFontSize(34);
-  doc.text("Birgit & Pætur", W / 2, 88, { align:"center" });
-  doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(...muted);
-  doc.text("Hilsner fra familie og venner", W / 2, 100, { align:"center" });
-  doc.text(CONFIG.dateText, W / 2, 107, { align:"center" });
-  // Indhold
-  const entries = [...(CONFIG.note.text.trim() ? [{ message: CONFIG.note.text, name: CONFIG.note.from.replace(/^Kærlig hilsen\s*/i, "") }] : []), ...list];
-  let y = H; // tving ny side
-  const newPage = () => { doc.addPage(); y = M + 4; };
-  entries.forEach((g, i) => {
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10.5);
-    const lines = doc.splitTextToSize(g.message, TW);
-    const need = lines.length * 5.2 + (g.name ? 8 : 0) + 12;
-    if (y + need > H - M) newPage();
-    doc.setTextColor(...ink); doc.text(lines, M, y, { lineHeightFactor: 1.45 });
-    y += lines.length * 5.2;
-    if (g.name) { doc.setFont(serif, "normal"); doc.setFontSize(13); doc.setTextColor(...muted); y += 3; doc.text(`– ${g.name}`, M, y); y += 2; }
-    y += 6; doc.setDrawColor(...line); doc.setLineWidth(0.25);
-    if (i < entries.length - 1) doc.line(M, y, W - M, y);
-    y += 8;
-  });
-  return doc.output("blob");
-}
-
-/* ---------- Fotojagt ---------- */
-const doneSet = new Set(JSON.parse(store.get("fotojagt") || "[]"));
-const camIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>`;
-const tickIcon = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7"/></svg>`;
-function renderTasks(){
-  const ol = $("tasks"); ol.innerHTML = "";
-  CONFIG.tasks.forEach((t, i) => {
-    const n = i + 1, done = doneSet.has(n);
-    const li = document.createElement("li");
-    if (done) li.className = "done";
-    li.innerHTML = `<button class="check" type="button" aria-pressed="${done}"><span>${tickIcon}</span></button>
-      <button class="task-text" type="button"></button>
-      <button class="snap" type="button">${camIcon}</button>`;
-    li.querySelector(".check").setAttribute("aria-label", `Kryds af: ${t}`);
-    li.querySelector(".task-text").textContent = t;
-    li.querySelector(".snap").setAttribute("aria-label", `Tag billede: ${t}`);
-    li.querySelector(".check").onclick = () => setTaskDone(n, !doneSet.has(n));
-    const shoot = () => { currentTask = n; $("camera").click(); };
-    li.querySelector(".task-text").onclick = shoot;
-    li.querySelector(".snap").onclick = shoot;
-    ol.append(li);
-  });
-  const c = doneSet.size, total = CONFIG.tasks.length, p = $("huntProgress");
-  p.classList.toggle("all", c === total);
-  p.textContent = c === total ? "Alle klaret – tak! Det bliver Birgit og Pætur glade for."
-    : c === 0 ? "" : `${c} af ${total} klaret`;
-}
-function setTaskDone(n, val){
-  val ? doneSet.add(n) : doneSet.delete(n);
-  store.set("fotojagt", JSON.stringify([...doneSet]));
-  renderTasks();
-}
-renderTasks();
-
 /* ---------- Lightbox ---------- */
-let lbIndex = 0;
-function showLb(i){
-  lbIndex = (i + files.length) % files.length;
-  const f = files[lbIndex];
-  const box = $("lbMedia");
-  box.innerHTML = "";
-  if (f.type.startsWith("video/")) {
-    const v = document.createElement("video");
-    v.src = f.url; v.controls = true; v.playsInline = true; v.autoplay = true;
-    box.append(v);
+function dlUrl(f){ return f.url + (f.url.includes("?") ? "&" : "?") + "download=" + encodeURIComponent(f.name); }
+function showLb(list, i){
+  state.lbList = list; state.lbIndex = (i + list.length) % list.length;
+  const f = list[state.lbIndex], m = $("lbMedia");
+  m.innerHTML = "";
+  if (isVideo(f)) {
+    const v = document.createElement("video"); v.src = f.url; v.controls = true; v.playsInline = true; v.autoplay = true; m.append(v);
   } else {
-    const img = document.createElement("img"); img.src = f.url; img.alt = ""; box.append(img);
+    const img = new Image(); img.alt = ""; img.src = f.web || f.url;
+    img.onerror = () => { if (img.src !== f.url) img.src = f.url; };
+    m.append(img);
   }
+  $("lbDl").href = dlUrl(f);
+  $("lbCount").textContent = `${state.lbIndex + 1} / ${list.length} · ${fmtSize(f.size)}`;
+  const del = $("lbDel"); del.hidden = !state.isAdmin; del.classList.remove("armed"); del.textContent = "Slet";
   $("lb").classList.add("open");
-  document.body.style.overflow = "hidden";
-  const del = $("lbDel");
-  del.hidden = !isAdmin; del.classList.remove("armed"); del.textContent = "Slet billede";
-  $("lbClose").focus();
 }
-$("lbDel").onclick = async () => {
-  const del = $("lbDel");
-  if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "Tryk igen for at slette"; return; }
-  const f = files[lbIndex];
-  try {
-    await api({ action:"delete", code, names:[f.name] });
-    files = files.filter((x) => x.name !== f.name);
-    renderGrid(); refreshCount();
-    if (files.length) showLb(Math.min(lbIndex, files.length - 1)); else closeLb();
-  } catch { del.textContent = "Kunne ikke slette – prøv igen"; del.classList.remove("armed"); }
-};
-function closeLb(){ $("lb").classList.remove("open"); $("lbMedia").innerHTML = ""; document.body.style.overflow = ""; }
+function closeLb(){ $("lb").classList.remove("open"); $("lbMedia").innerHTML = ""; }
 $("lbClose").onclick = closeLb;
-$("lbPrev").onclick = () => showLb(lbIndex - 1);
-$("lbNext").onclick = () => showLb(lbIndex + 1);
+$("lbPrev").onclick = () => showLb(state.lbList, state.lbIndex - 1);
+$("lbNext").onclick = () => showLb(state.lbList, state.lbIndex + 1);
 $("lb").addEventListener("click", (e) => { if (e.target.id === "lb") closeLb(); });
 document.addEventListener("keydown", (e) => {
   if (!$("lb").classList.contains("open")) return;
   if (e.key === "Escape") closeLb();
-  if (e.key === "ArrowLeft") showLb(lbIndex - 1);
-  if (e.key === "ArrowRight") showLb(lbIndex + 1);
+  if (e.key === "ArrowLeft") $("lbPrev").click();
+  if (e.key === "ArrowRight") $("lbNext").click();
 });
-let tx = null;
-$("lb").addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive:true });
+let touchX = null;
+$("lb").addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
 $("lb").addEventListener("touchend", (e) => {
-  if (tx === null) return;
-  const dx = e.changedTouches[0].clientX - tx; tx = null;
-  if (Math.abs(dx) > 50) showLb(lbIndex + (dx < 0 ? 1 : -1));
+  if (touchX == null) return; const dx = e.changedTouches[0].clientX - touchX; touchX = null;
+  if (Math.abs(dx) > 60 && !(e.target.tagName === "VIDEO")) (dx > 0 ? $("lbPrev") : $("lbNext")).click();
 });
+$("lbDel").onclick = async () => {
+  const del = $("lbDel");
+  if (!del.classList.contains("armed")) { del.classList.add("armed"); del.textContent = "Tryk igen for at slette"; return; }
+  const f = state.lbList[state.lbIndex];
+  del.disabled = true;
+  try {
+    await api({ action: "delete", paths: [f.path] });
+    state.files = state.files.filter((x) => x.path !== f.path);
+    const list = inFolder(state.folder);
+    render();
+    if (list.length) showLb(list, Math.min(state.lbIndex, list.length - 1)); else closeLb();
+  } catch { del.textContent = "Kunne ikke slette"; }
+  finally { del.disabled = false; }
+};
+
+/* ---------- Zip (streames direkte til disken) ---------- */
+let zipping = false;
+function setStatus(text, pct){
+  $("status").innerHTML = "";
+  if (!text) return;
+  $("status").append(text);
+  if (pct != null) $("status").insertAdjacentHTML("beforeend", `<div class="bar"><i style="width:${Math.round(pct*100)}%"></i></div>`);
+}
+function zipEntries(list){
+  const base = CONFIG.zipName;
+  return list.map((f) => ({ name: `${base}/${CONFIG.folders.find((x) => x.id === f.folder).label}/${f.name}`, url: f.url, size: f.size }));
+}
+async function swReady(){
+  if (!("serviceWorker" in navigator)) return null;
+  const reg = await navigator.serviceWorker.register("sw.js");
+  const sw = reg.active || await new Promise((res) => {
+    const w = reg.installing || reg.waiting;
+    if (!w) return res(null);
+    w.addEventListener("statechange", () => { if (w.state === "activated") res(w); });
+  });
+  return sw;
+}
+async function saveZip(list, label){
+  if (zipping || !list.length) return;
+  const total = sumSize(list);
+  const filename = `${CONFIG.zipName}${label ? " – " + label : ""}.zip`;
+  const entries = zipEntries(list);
+  zipping = true; render();
+  try {
+    if (window.showSaveFilePicker) {
+      // Chrome/Edge: skriv direkte til en fil, man selv vælger
+      let handle;
+      try { handle = await showSaveFilePicker({ suggestedName: filename, types: [{ description: "Zip", accept: { "application/zip": [".zip"] } }] }); }
+      catch (e) { if (e.name === "AbortError") return; throw e; }
+      const writable = await handle.createWritable();
+      let done = 0;
+      async function* gen(){
+        for (const e of entries) {
+          const r = await fetch(e.url); if (!r.ok) throw new Error("hent");
+          const reader = r.body.getReader();
+          const counted = new ReadableStream({ async pull(c){ const { value, done: d } = await reader.read(); if (d) return c.close(); done += value.byteLength; setStatus(`Henter … ${fmtSize(done)} af ${fmtSize(total)}`, done/total); c.enqueue(value); } });
+          yield e.size > 0 ? { name: e.name, input: counted, size: e.size } : { name: e.name, input: counted };
+        }
+      }
+      setStatus(`Henter … 0 af ${fmtSize(total)}`, 0);
+      await downloadZip(gen()).body.pipeTo(writable);
+      setStatus(`Færdig – zip-filen er gemt (${fmtSize(total)}).`);
+    } else {
+      // Safari/Firefox m.fl.: service worker streamer zip'en som en almindelig download
+      setStatus("Starter download …");
+      const sw = await swReady();
+      if (!sw) throw new Error("no-sw");
+      const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      await new Promise((res, rej) => {
+        const ch = new MessageChannel(); ch.port1.onmessage = () => res();
+        sw.postMessage({ type: "zip", id, filename, files: entries }, [ch.port2]);
+        setTimeout(() => rej(new Error("sw-timeout")), 5000);
+      });
+      const fr = document.createElement("iframe"); fr.hidden = true; fr.src = `__zip/${id}`; document.body.append(fr);
+      setTimeout(() => fr.remove(), 60 * 60 * 1000);
+      setStatus(`Downloaden er startet (${fmtSize(total)}). Følg med i browserens overførsler – lad siden være åben, til den er færdig.`);
+    }
+  } catch (err) {
+    console.error(err);
+    setStatus("Zip-downloaden virkede ikke i denne browser. Prøv Chrome på en computer – eller åbn billederne og tryk “Hent original”.");
+  } finally { zipping = false; render(); }
+}
+$("zipAll").onclick = () => saveZip(state.files, "");
+$("zipFolder").onclick = () => { const cur = CONFIG.folders.find((f) => f.id === state.folder); saveZip(inFolder(state.folder), cur.label); };
+
+/* ---------- Ingrids upload ---------- */
+const queue = [];
+let active = 0;
+const PARALLEL = 2;
+
+function cleanName(name){
+  const dot = name.lastIndexOf(".");
+  let base = dot > 0 ? name.slice(0, dot) : name, ext = dot > 0 ? name.slice(dot + 1) : "";
+  const fix = (s) => s.replace(/æ/g,"ae").replace(/Æ/g,"Ae").replace(/ø/g,"oe").replace(/Ø/g,"Oe").replace(/å/g,"aa").replace(/Å/g,"Aa")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9._-]+/g,"-").replace(/^[^A-Za-z0-9]+/,"").replace(/-+/g,"-");
+  base = fix(base).slice(0, 120) || "fil"; ext = fix(ext).slice(0, 10);
+  return ext ? `${base}.${ext}` : base;
+}
+function uniqueName(folder, name, size){
+  const taken = new Set([...state.files.filter((f) => f.folder === folder).map((f) => f.name), ...queue.filter((q) => q.folder === folder && !q.failed).map((q) => q.name)]);
+  const same = state.files.find((f) => f.folder === folder && f.name === name && f.size === size);
+  if (same) return { dup: true };
+  if (!taken.has(name)) return { name };
+  const dot = name.lastIndexOf("."), b = dot > 0 ? name.slice(0, dot) : name, e = dot > 0 ? name.slice(dot) : "";
+  for (let n = 2; ; n++) if (!taken.has(`${b}-${n}${e}`)) return { name: `${b}-${n}${e}` };
+}
+function guessType(file){
+  if (file.type) return file.type;
+  const ext = (file.name.split(".").pop() || "").toLowerCase();
+  return ({ jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", heic:"image/heic", heif:"image/heif", mov:"video/quicktime", mp4:"video/mp4", m4v:"video/mp4", mts:"video/mp2t" })[ext] || "application/octet-stream";
+}
+
+function addFiles(files){
+  for (const file of files) {
+    const folder = state.folder;
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="label"></span><span class="state">I kø</span><span class="bar"><i></i></span>`;
+    li.querySelector(".label").textContent = file.name;
+    $("queue").append(li);
+    const u = uniqueName(folder, cleanName(file.name), file.size);
+    if (u.dup) { li.classList.add("ok"); li.querySelector(".state").textContent = "Findes allerede"; li.querySelector(".bar").remove(); continue; }
+    queue.push({ file, folder, name: u.name, li, sent: 0, done: false, failed: false });
+  }
+  pump(); updateSum();
+}
+function updateSum(){
+  const left = queue.filter((q) => !q.done && !q.failed);
+  const failed = queue.filter((q) => q.failed).length;
+  const doneN = queue.filter((q) => q.done).length;
+  const bytesLeft = left.reduce((a, q) => a + q.file.size - q.sent, 0);
+  $("sum").textContent = queue.length ? (left.length ? `${doneN} af ${queue.length} færdige · ${fmtSize(bytesLeft)} tilbage` : `Alt er uploadet (${doneN})`) + (failed ? ` · ${failed} fejlede – tryk på dem for at prøve igen` : "") : "";
+}
+window.addEventListener("beforeunload", (e) => { if (queue.some((q) => !q.done && !q.failed)) { e.preventDefault(); e.returnValue = ""; } });
+
+function pump(){
+  while (active < PARALLEL) {
+    const q = queue.find((x) => !x.done && !x.failed && !x.started);
+    if (!q) break;
+    q.started = true; active++;
+    uploadOne(q).finally(() => { active--; updateSum(); pump(); if (!queue.some((x) => !x.done && !x.failed)) refresh(); });
+  }
+}
+
+async function signed(path, kind){ return (await api({ action: "signUpload", path, kind })).token; }
+
+function tusUpload(blob, objectName, contentType, token, onProgress){
+  return new Promise((resolve, reject) => {
+    const up = new tus.Upload(blob, {
+      endpoint: TUS,
+      retryDelays: [0, 2000, 5000, 10000, 20000, 30000, 60000],
+      headers: { apikey: CONFIG.anonKey, "x-signature": token },
+      uploadDataDuringCreation: true,
+      removeFingerprintOnSuccess: true,
+      metadata: { bucketName: "album", objectName, contentType, cacheControl: "3600" },
+      chunkSize: 6 * 1024 * 1024,
+      onProgress, onError: reject, onSuccess: resolve,
+    });
+    up.findPreviousUploads().then((prev) => { if (prev.length) up.resumeFromPreviousUpload(prev[0]); up.start(); }).catch(() => up.start());
+  });
+}
+
+async function uploadOne(q){
+  const st = q.li.querySelector(".state"), bar = q.li.querySelector(".bar i");
+  q.li.classList.remove("bad"); q.li.onclick = null;
+  try {
+    const path = `${q.folder}/${q.name}`;
+    st.textContent = "Starter …";
+    const token = await signed(path, "original");
+    await tusUpload(q.file, path, guessType(q.file), token, (sent, total) => {
+      q.sent = sent; bar.style.width = (sent / total * 100) + "%";
+      st.textContent = `${Math.floor(sent / total * 100)} % af ${fmtSize(total)}`; updateSum();
+    });
+    st.textContent = "Laver forhåndsvisning …";
+    try { await makePreviews(q.file, path); } catch (e) { console.warn("preview", e); }
+    q.done = true; q.li.classList.add("ok"); st.textContent = "Uploadet";
+    state.files.push({ path, folder: q.folder, name: q.name, size: q.file.size, type: guessType(q.file), url: "", thumb: null });
+  } catch (err) {
+    console.error(err);
+    q.failed = true; q.started = false; q.li.classList.add("bad"); st.textContent = "Fejlede – tryk for at prøve igen";
+    q.li.style.cursor = "pointer";
+    q.li.onclick = () => { q.failed = false; pump(); updateSum(); };
+  }
+}
+
+/* Små og mellemstore JPEG-udgaver til visning (originalen røres ikke) */
+async function frameOf(file){
+  if (isVideo(file)) {
+    const url = URL.createObjectURL(file);
+    try {
+      const v = document.createElement("video"); v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
+      await new Promise((res, rej) => { v.onloadeddata = res; v.onerror = rej; setTimeout(() => rej(new Error("timeout")), 15000); });
+      v.currentTime = Math.min(1, (v.duration || 2) / 2);
+      await new Promise((res, rej) => { v.onseeked = res; setTimeout(() => rej(new Error("timeout")), 15000); });
+      return { src: v, w: v.videoWidth, h: v.videoHeight, video: true };
+    } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  }
+  const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+  return { src: bmp, w: bmp.width, h: bmp.height };
+}
+function toJpeg(fr, maxSide, q){
+  const s = Math.min(1, maxSide / Math.max(fr.w, fr.h));
+  const c = document.createElement("canvas"); c.width = Math.round(fr.w * s); c.height = Math.round(fr.h * s);
+  c.getContext("2d").drawImage(fr.src, 0, 0, c.width, c.height);
+  return new Promise((res, rej) => c.toBlob((b) => b ? res(b) : rej(new Error("toBlob")), "image/jpeg", q));
+}
+async function putPreview(path, kind, blob){
+  const token = await signed(path, kind);
+  const [folder, name] = path.split("/");
+  const obj = `thumbs/${kind === "web" ? "w--" : ""}${folder}--${name}.jpg`;
+  await tusUpload(blob, obj, "image/jpeg", token, () => {});
+}
+async function makePreviews(file, path){
+  const fr = await frameOf(file);
+  await putPreview(path, "thumb", await toJpeg(fr, 640, .82));
+  if (!fr.video) await putPreview(path, "web", await toJpeg(fr, 2200, .88));
+  if (fr.src.close) fr.src.close();
+}
+
+$("file").addEventListener("change", (e) => { addFiles([...e.target.files]); e.target.value = ""; });
+const drop = $("drop");
+["dragenter","dragover"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", (e) => addFiles([...e.dataTransfer.files]));
 
 /* ---------- Start ---------- */
-(async () => {
-  const s = await refreshCount();
-  if (code) { try { await openAlbum(code); return; } catch { store.set("album-code", ""); code = ""; } }
-  if (s && s.isPublic) { try { await openAlbum(); } catch {} }
-})();
+const saved = store.get("album-code");
+if (saved) openAlbum(saved, false);
 </script>
 </body>
 </html>
