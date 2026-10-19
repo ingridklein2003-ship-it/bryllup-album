@@ -109,6 +109,8 @@
   .lb-bar .armed{background:#B3261E}
   .lb-count{color:rgba(255,255,255,.7);font-size:13px}
 
+  .relock{text-align:center;margin:40px 0 0}
+  .relock button{all:unset;cursor:pointer;color:var(--muted);font-size:14px;text-decoration:underline;text-underline-offset:3px;padding:6px}
   footer{text-align:center;margin-top:72px;font-family:var(--serif);font-size:24px;color:var(--muted)}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -162,6 +164,8 @@
       <ul class="queue" id="queue"></ul>
       <p class="sum" id="sum"></p>
     </section>
+
+    <p class="relock"><button type="button" id="relock">Skift kode</button></p>
   </div>
 
   <footer>Stort tillykke, Birgit og Pætur</footer>
@@ -561,8 +565,9 @@ const drop = $("drop");
 drop.addEventListener("drop", (e) => addFiles([...e.dataTransfer.files]));
 
 /* ---------- Start ---------- */
+$("relock").onclick = () => { store.del("album-code"); location.href = location.pathname; };
 const saved = store.get("album-code");
-if (saved) openAlbum(saved, false);
+if (saved && !/kode|admin/i.test(location.search + location.hash)) openAlbum(saved, false);
 </script>
 </body>
 </html>
